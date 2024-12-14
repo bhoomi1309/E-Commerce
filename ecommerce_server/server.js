@@ -9,7 +9,7 @@ const cartRouter=require('./Routes/cart-routes');
 
 require('dotenv').config();
 
-const connectionString = 'mongodb+srv://'+process.env.USER+':'+process.env.PASSWORD+'@mongodb-wt.rmne2.mongodb.net/btech_cse_116';
+const connectionString = process.env.MONGO_URI;
 mongoose.connect(connectionString).then(() => {
   console.log("Connected");
   const app = express();
