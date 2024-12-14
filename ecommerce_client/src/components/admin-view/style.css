@@ -1,0 +1,157 @@
+.nav-link{
+    border-radius: 10px;
+}
+.nav-link:hover{
+    background-color: #dee3e0;
+}
+#offcanvas{
+    width: 18.5vw;
+}
+.navbar-toggler{
+    display: none;
+}
+@media(max-width: 993px){
+    #offcanvas{
+        width: 25vw;
+    }
+    .main{
+        margin-left: 200px;
+    }
+}
+@media(max-width:767px){
+    .main{
+        margin-left: 0px;
+    }
+    .navbar-toggler{
+        display: block;
+    }
+}
+.order-details-popup {
+    position: absolute;
+    padding: 30px;
+    border: 1px solid black;
+    background-color: #6bf68b;
+    transform: translate(-30%, -50%);
+    border-radius: 5px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    z-index: 20;
+    width: 100%;
+    max-width: 30vw;
+}
+.tableItems{
+    width: 27vw;
+}
+.btnClose {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    cursor: pointer;
+    background-color: red;
+    color: white;
+}
+@media (max-width: 980px) {
+    .order-details-popup {
+        max-width: 50vw;
+    }
+    .tableItems{
+        width: 20vw;
+    }
+    .btnClose {
+        top: 10px;
+        right: 10px;
+    }
+}
+
+@media (max-width: 576px) {
+    .order-details-popup {
+        max-width: 100vw;
+        transform: translate(0%, -50%);
+    }
+    .tableItems{
+        width: 9vw;
+    }
+    .btnClose {
+        top: 5px;
+        right: 5px;
+    }
+}
+
+.modal-overlay-add-product {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+}
+
+.modal-box-add {
+    background-color: #fff;
+    padding: 30px;
+    border-radius: 8px;
+    width: 450px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.modal-box-add h2 {
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.fg {
+    margin-bottom: 15px;
+}
+
+.fg label {
+    display: block;
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+.fg input {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+.fa {
+    display: flex;
+    justify-content: space-between;
+}
+
+.fa button {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    font-family: 'Arial', sans-serif;
+}
+
+.btnAdd {
+    background-color: #28a745;
+    color: white;
+    transition: background-color 0.3s ease;
+}
+
+.btnAdd:hover {
+    background-color: #218838;
+}
+
+.fa button[type="button"] {
+    background-color: #dc3545;
+    color: white;
+    transition: background-color 0.3s ease;
+}
+
+.fa button[type="button"]:hover {
+    background-color: #c82333;
+}
