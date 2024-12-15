@@ -5,9 +5,15 @@ const cart=require('../models/Cart');
 const router = express.Router();
 
 router.get('/users', async (req, res) => {
-    const ans = await users.find();
-    res.send(ans);
+    try {
+        const ans = await users.find();
+        res.status(200).send(ans);
+    } catch (error) {
+        console.error('Error fetching users:', error);
+        res.status(500).send({ error: 'An error occurred while fetching users' });
+    }
 });
+
 router.get('/users/email/:email', async (req, res) => {
     try {
         const email = req.params.email;
@@ -22,6 +28,7 @@ router.get('/users/email/:email', async (req, res) => {
         res.status(500).json({ message: 'Server error' });
     }
 });
+
 router.get('/users/username/:username', async (req, res) => {
     try {
         const username = req.params.username;
@@ -61,7 +68,6 @@ router.post('/register', async (req, res) => {
         res.status(500).json({ message: 'An error occurred while registering. Please try again later.' });
     }
 });
-
 
 router.post('/login', async (req, res) => {
     const checkUser = await users.findOne({ Email: req.body.Email });

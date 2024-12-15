@@ -23,7 +23,7 @@ router.put("/cart/remove", async (req, res) => {
         if (result.modifiedCount > 0) {
             return res.status(200).json(
                 {
-                    success:true,
+                    success: true,
                     message: "Product removed from cart",
                     updatedCart,
                 }
@@ -74,12 +74,12 @@ router.put("/cart/add", async (req, res) => {
             }
             );
         } else {
-    return res.status(400).json({ message: "Product not added to cart or no changes made" });
-}
+            return res.status(400).json({ message: "Product not added to cart or no changes made" });
+        }
     } catch (error) {
-    console.error("Error adding product to cart:", error);
-    res.status(500).json({ message: "Internal server error" });
-}
+        console.error("Error adding product to cart:", error);
+        res.status(500).json({ message: "Internal server error" });
+    }
 });
 
 router.put('/cart/empty', async (req, res) => {

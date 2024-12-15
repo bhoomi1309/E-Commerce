@@ -1,5 +1,6 @@
 import Swal from "sweetalert2";
 const apiUser = 'http://localhost:3001';
+
 export const checkUserByEmail = async (email) => {
     try {
         const res = await fetch(apiUser + '/auth/users/email/' + email);
@@ -14,6 +15,7 @@ export const checkUserByEmail = async (email) => {
         return null;
     }
 };
+
 export const checkUserByUsername = async (username) => {
     try {
         const res = await fetch(apiUser + '/auth/users/username/' + username);
@@ -59,6 +61,7 @@ export const addUser = async (user, navigate) => {
         });
     }
 };
+
 export const checkUser = async (user) => {
     try {
         const res = await fetch(apiUser + '/auth/login', {

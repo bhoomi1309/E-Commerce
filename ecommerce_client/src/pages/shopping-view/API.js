@@ -1,13 +1,35 @@
 const api = 'http://localhost:3001';
-export const fetchProducts = () => {
-    const arr = fetch(api + '/products').then(res => res.json());
-    return arr;
+
+export const fetchProducts = async () => {
+    try {
+        const response = await fetch(api + '/products');
+        if (!response.ok) {
+            throw new Error(`Error: ${response.status} ${response.statusText}`);
+        }
+        const data = await response.json();
+        return data;
+    } catch (error) {
+        console.error('Failed to fetch products:', error);
+        throw error;
+    }
 };
+
 export const getProductById = async (id) => {
-    const res = await fetch(api + '/products/' + id, { method: "GET" });
-    const data = await res.json();
-    return data;
+    try {
+        const response = await fetch(`${api}/products/${id}`, { method: "GET" });
+
+        if (!response.ok) {
+            throw new Error(`Error: ${response.status} ${response.statusText}`);
+        }
+
+        const data = await response.json();
+        return data;
+    } catch (error) {
+        console.error(`Failed to fetch product with ID ${id}:`, error);
+        throw error;
+    }
 };
+
 export const removeFromCartAPI = async (userEmail, productId) => {
     try {
         const response = await fetch(api + "/cart/remove", {
@@ -31,6 +53,7 @@ export const removeFromCartAPI = async (userEmail, productId) => {
         return { error: error.message };
     }
 };
+
 export const getCartByEmail = async (email) => {
     try {
         const res = await fetch(api + '/cart/' + email, { method: "GET" });

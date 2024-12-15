@@ -5,9 +5,15 @@ const products = require("../models/Products");
 const router=express.Router();
 
 router.get('/orders', async (req, res) => {
-    const ans = await orders.find();
-    res.send(ans);
+    try {
+        const ans = await orders.find();
+        res.status(200).send(ans);
+    } catch (error) {
+        console.error('Error fetching orders:', error);
+        res.status(500).send({ error: 'An error occurred while fetching orders' });
+    }
 });
+
 router.get('/orders/:email', async (req, res) => {
     try {
         const ordersList = await orders.find({ Email: req.params.email });
@@ -17,6 +23,7 @@ router.get('/orders/:email', async (req, res) => {
         res.status(500).send({ error: "Failed to fetch orders" });
     }
 });
+
 router.post('/order/add', async (req, res) => {
     try {
         const { email, items, address, paymentMethod, totalAmount, orderDate } = req.body;
@@ -27,8 +34,8 @@ router.post('/order/add', async (req, res) => {
 
         for (const itemNo of items) {
             const result = await products.updateOne(
-                { No: itemNo, Stock: { $gt: 0 } }, // Ensure stock is available
-                { $inc: { Stock: -1 } }           // Decrement stock by 1
+                { No: itemNo, Stock: { $gt: 0 } },
+                { $inc: { Stock: -1 } }
             );
             
             

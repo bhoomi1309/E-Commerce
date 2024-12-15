@@ -4,9 +4,15 @@ const products=require('../models/Products');
 const router=express.Router();
 
 router.get('/products', async (req, res) => {
-    const ans = await products.find();
-    res.send(ans);
+  try {
+      const ans = await products.find();
+      res.status(200).send(ans);
+  } catch (error) {
+      console.error('Error fetching products:', error);
+      res.status(500).send({ error: 'An error occurred while fetching products' });
+  }
 });
+
 router.get("/products/:id", async (req, res) => {
   try {
     const product = await products.find({
@@ -20,6 +26,7 @@ router.get("/products/:id", async (req, res) => {
     res.status(500).json({ message: "Failed to fetch the product", error });
   }
 });
+
 router.post('/products', async (req, res) => {
   try {
     const newItem = new products({ ...req.body,No: await products.countDocuments() + 1 });
@@ -30,25 +37,48 @@ router.post('/products', async (req, res) => {
     res.status(500).json({ message: 'Failed to add product', error: error.message });
   }
 });
+
 router.delete('/products/:id', async (req, res) => {
-    const productId=parseInt(req.params.id);
-    const result = await products.findOneAndDelete({ No: productId });
-    if (result) {
-      res.json({ message: 'Product deleted successfully!' });
-    }
-    else {
-      res.json({ message: 'Product not found!' });
-    }
+  try {
+      const productId = parseInt(req.params.id);
+      if (isNaN(productId)) {
+          return res.status(400).json({ message: 'Invalid product ID' });
+      }
+
+      const result = await products.findOneAndDelete({ No: productId });
+      if (result) {
+          res.status(200).json({ message: 'Product deleted successfully!' });
+      } else {
+          res.status(404).json({ message: 'Product not found!' });
+      }
+  } catch (error) {
+      console.error('Error deleting product:', error);
+      res.status(500).json({ message: 'An error occurred while deleting the product' });
+  }
 });
+
 router.post('/products/:id', async (req, res) => {
-    const { deletedNo } = req.body;
-    await products.updateMany(
-      { No: { $gt: deletedNo } },
-      { $inc: { No: -1 } }
-    );
-    const updatedItems = await products.find().sort({ No: 1 });
-    res.json(updatedItems);
-  });
+  try {
+      const { deletedNo } = req.body;
+
+      if (typeof deletedNo !== 'number') {
+          return res.status(400).json({ message: 'Invalid input: deletedNo must be a number' });
+      }
+
+      await products.updateMany(
+          { No: { $gt: deletedNo } },
+          { $inc: { No: -1 } }
+      );
+
+      const updatedItems = await products.find().sort({ No: 1 });
+
+      res.status(200).json(updatedItems);
+  } catch (error) {
+      console.error('Error updating product numbers:', error);
+      res.status(500).json({ message: 'An error occurred while updating products' });
+  }
+});
+
 router.get('/products/stock/:productNo', async (req, res) => {
   try {
       const { productNo } = req.params;

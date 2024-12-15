@@ -148,22 +148,6 @@ function ShoppingAccount() {
                             You have no orders yet.
                         </p>
                     )}
-
-                    <button
-                        className="btn btn-primary mt-4"
-                        style={{
-                            padding: "10px 20px",
-                            backgroundColor: "#150647",
-                            color: "#fff",
-                            border: "none",
-                            borderRadius: "5px",
-                            fontSize: "1rem",
-                            cursor: "pointer",
-                        }}
-                        onClick={() => alert("Edit account details coming soon!")}
-                    >
-                        Edit Account Details
-                    </button>
                 </div>
             ) : (
                 <p
