@@ -1,66 +1,102 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
+import { getUserByEmail } from "../../pages/admin-view/API";
+import Popup from "reactjs-popup";
+import "reactjs-popup/dist/index.css";
+import "./style.css";
 
-function OrderDescription({ order, closePopup }) {
-    return (
-        <div className="container">
-            <div className="row justify-content-center">
-                <div className="col-md-6 col-lg-4 order-details-popup text-center p-4 position-relative">
-                    <button type="button" className="btn btnClose mt-2" onClick={closePopup}>Close</button>
-                    <div className="row mb-4">
-                        <div className="col">
-                            <h3>Order ID: {order.No}</h3>
-                        </div>
-                    </div>
+function OrderDescription({ order, closePopup, isAdmin }) {
+  const [userData, setUserData] = useState([]);
 
-                    <div className="row mb-3">
-                        <div className="col text-start">
-                            <p><strong>Order Date:</strong> {order.OrderDate}</p>
-                        </div>
-                    </div>
+  useEffect(() => {
+    if (isAdmin) {
+      const fetchUserData = async () => {
+        try {
+          const data = await getUserByEmail(order.Email);
+          if (data != null) {
+            setUserData(data);
+          } else {
+            console.log("User not found");
+          }
+        } catch (error) {
+          console.error("Error fetching user data:", error);
+        }
+      };
+      fetchUserData();
+    }
+  }, [isAdmin, order.Email]);
 
-                    <div className="row mb-3">
-                        <div className="col">
-                            <p><strong>Products</strong></p>
-                            <table className="table table-responsive tableItems">
-                                <thead>
-                                    <tr>
-                                        <th>No</th>
-                                        <th>Title</th>
-                                        <th>Category</th>
-                                        <th>Price</th>
-                                        <th>Quantity</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    {order.Items.map((item, index) => (
-                                        <tr key={index}>
-                                            <td>{item.ProductId}</td>
-                                            <td>{item.Title}</td>
-                                            <td>{item.Category}</td>
-                                            <td>{item.SalePrice}</td>
-                                            <td>{item.Quantity}</td>
-                                        </tr>
-                                    ))}
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
+  return (
+    <Popup 
+        open={true} 
+        onClose={closePopup}
+        contentStyle={{
+            display: "flex",
+            justifyContent: "center",
+            textAlign: "center",
+            alignItems: "center",
+            padding: "20px",
+            background: "white",
+            maxWidth: "850px",
+            maxHeight: "100vh",
+            overflowY: "auto",
+            backgroundColor: "#37ab96",
+            border: "3px solid black"
+          }}
+    >
+      <div className="popup-content">
+        <button onClick={closePopup}>&times;</button>
+        <h3>Order ID: {order.No}</h3>
 
-                    <div className="row mb-1">
-                        <div className="col">
-                            <p><strong>Payment Method:</strong> {order.PaymentMethod}</p>
-                        </div>
-                    </div>
+        {isAdmin && (
+          <div className="text-start py-3">
+            <h4 className="text-center">Customer Details</h4>
+            <p>
+              <strong>Email:</strong> {userData.Email}
+            </p>
+            <p>
+              <strong>Username:</strong> {userData.Username}
+            </p>
+            <p>
+              <strong>Phone:</strong> {userData.Phone}
+            </p>
+          </div>
+        )}
 
-                    <div className="row mb-3">
-                        <div className="col">
-                            <p><strong>Total Amount:</strong> {order.TotalAmount}</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
+        <h4>Order Date: {order.OrderDate}</h4>
+
+        <h4>Products</h4>
+        <table>
+          <thead>
+            <tr>
+              <th>No</th>
+              <th>Title</th>
+              <th>Category</th>
+              <th>Price</th>
+              <th>Quantity</th>
+            </tr>
+          </thead>
+          <tbody>
+            {order.enrichedItems.map((item, index) => (
+              <tr key={index}>
+                <td>{item.productDetails.No}</td>
+                <td>{item.productDetails.Title}</td>
+                <td>{item.productDetails.Category}</td>
+                <td>{item.productDetails.SalePrice}</td>
+                <td>{item.productDetails.Quantity ?? 1}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+
+        <div>
+          <strong>Payment Method:</strong> {order.PaymentMethod}
         </div>
-    );
+        <div>
+          <strong>Total Amount:</strong> {order.TotalAmount}
+        </div>
+      </div>
+    </Popup>
+  );
 }
 
 export default OrderDescription;

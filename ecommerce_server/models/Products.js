@@ -8,6 +8,8 @@ const productSchema = new mongoose.Schema({
     Price: Number,
     SalePrice: Number,
     Stock: Number,
+    Details: String,
+    Similarity: Number,
     isOutOfStock: { type: Boolean, default: false }
 });
 

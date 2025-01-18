@@ -1,11 +1,35 @@
 import React, { useState, useEffect } from "react";
 import useUserDetails from "../../useUserDetails";
-import { getOrdersByEmail } from "../API";
+import { getOrdersByEmail, fetchProducts } from "../API";
+import './account-style.css';
+import OrderDescription from "../../../components/admin-view/OrderDescription";
 
 function ShoppingAccount() {
     const { userData, isUserDataReady } = useUserDetails();
     const [orders, setOrders] = useState([]);
     const [isLoadingOrders, setIsLoadingOrders] = useState(true);
+    const [selectedOrder, setSelectedOrder] = useState(null);
+    const [orderItems, setOrderItems] = useState([]);
+    const isAdmin=false;
+
+    useEffect(() => {
+        fetchProducts().then((res) => {
+            setOrderItems(res);
+        });
+    }, []);
+
+    const handleOrderClick = (order) => {
+        const enrichedItems = order.Items.map((item) => {
+            const productDetails = orderItems.find(
+                (product) => product.No === item
+            );
+            return {
+                ...item,
+                productDetails,
+            };
+        });
+        setSelectedOrder({ ...order, enrichedItems });
+    };
 
     useEffect(() => {
         if (isUserDataReady && userData?.Email) {
@@ -24,6 +48,10 @@ function ShoppingAccount() {
     const parseDateString = (dateString) => {
         const [day, month, year] = dateString.split("-").map(Number);
         return new Date(year, month - 1, day);
+    };
+
+    const closePopup = () => {
+        setSelectedOrder(null);
     };
 
     return (
@@ -67,7 +95,7 @@ function ShoppingAccount() {
                             fontSize: "1.2rem",
                             color: "#555",
                             marginBottom: "30px",
-                            lineHeight: "1.5",    
+                            lineHeight: "1.5",
                         }}
                     >
                         Here's your account information:
@@ -116,21 +144,21 @@ function ShoppingAccount() {
                                 <div
                                     key={order.No}
                                     className="order-card"
+                                    onClick={() => handleOrderClick(order)}
                                     style={{
                                         backgroundColor: "#f9f9f9",
                                         padding: "15px",
                                         marginBottom: "15px",
                                         borderRadius: "8px",
                                         boxShadow: "0 2px 4px rgba(0, 0, 0, 0.1)",
+                                        cursor: "pointer",
                                     }}
                                 >
                                     <p>
-                                        <strong>Date:</strong>{" "}
-                                        {parseDateString(order.OrderDate).toLocaleDateString()}
+                                        <strong>Date:</strong> {parseDateString(order.OrderDate).toLocaleDateString()}
                                     </p>
                                     <p>
-                                        <strong>Items:</strong>{" "}
-                                        {order.Items.length}
+                                        <strong>Items:</strong> {order.Items.length}
                                     </p>
                                     <p>
                                         <strong>Total:</strong> ₹{order.TotalAmount}
@@ -147,6 +175,14 @@ function ShoppingAccount() {
                         >
                             You have no orders yet.
                         </p>
+                    )}
+
+                    {selectedOrder && (
+                        <OrderDescription
+                            order={selectedOrder}
+                            closePopup={closePopup}
+                            isAdmin={isAdmin}
+                        />
                     )}
                 </div>
             ) : (

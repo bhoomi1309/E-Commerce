@@ -1,10 +1,12 @@
 import { useEffect, useState } from "react";
-import { fetchOrders } from "../API";
-import OrderDescription from '../../../components/admin-view/OrderDescription';
+import { fetchOrders, fetchProducts } from "../API";
+import OrderDescription from "../../../components/admin-view/OrderDescription";
 
 function AdminOrders() {
     const [orders, setOrders] = useState([]);
+    const [orderItems, setOrderItems] = useState([]);
     const [selectedOrder, setSelectedOrder] = useState(null);
+    const isAdmin=true;
 
     useEffect(() => {
         const getOrders = async () => {
@@ -19,12 +21,22 @@ function AdminOrders() {
         getOrders();
     }, []);
 
+    useEffect(() => {
+            fetchProducts().then((res) => {
+                setOrderItems(res);
+            });
+        }, []);
+
     const handleOrderClick = (order) => {
-        setSelectedOrder(order); // Set the selected order to display its details
+        const enrichedItems = order.Items.map((item) => {
+            const productDetails = orderItems.find((product) => product.No === item);
+            return { ...item, productDetails };
+        });
+        setSelectedOrder({ ...order, enrichedItems });
     };
 
     const closePopup = () => {
-        setSelectedOrder(null); // Close the popup
+        setSelectedOrder(null);
     };
 
     return (
@@ -60,9 +72,10 @@ function AdminOrders() {
             </div>
 
             {selectedOrder && (
-                <OrderDescription 
-                    order={selectedOrder} 
-                    closePopup={closePopup} 
+                <OrderDescription
+                    order={selectedOrder}
+                    closePopup={closePopup}
+                    isAdmin={isAdmin}
                 />
             )}
         </div>

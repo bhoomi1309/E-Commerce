@@ -62,4 +62,47 @@ router.post('/order/add', async (req, res) => {
     }
 });
 
+router.get('/recommendations/:email', async (req, res) => {
+    try {
+        const email = req.params.email;
+        const purchased = await orders.find({ Email: email });
+        if (!purchased || purchased.length === 0) {
+            const randomProducts = await products.aggregate([{ $sample: { size: 6 } }]);
+            return res.send(randomProducts);
+        }
+        const purchasedProductNos = [...new Set(purchased.flatMap(order => order.Items))];
+
+        const purchasedProducts = await products.find({ No: { $in: purchasedProductNos } });
+        const similarityNos = [...new Set(purchasedProducts.map(product => product.Similarity))];
+
+        const similarProducts = await products.aggregate([
+            {
+                $match: {
+                    Similarity: { $in: similarityNos },
+                    No: { $nin: purchasedProductNos }
+                }
+            },
+            { $sample: { size: 6 } }
+        ]);        
+
+        let recommendedProducts = [...similarProducts];
+
+        if (recommendedProducts.length < 6) {
+            const additionalProducts = await products.find({
+                No: { $nin: [...purchasedProductNos, ...recommendedProducts.map(p => p.No)] }
+            }).limit(6 - recommendedProducts.length);
+
+            recommendedProducts.push(...additionalProducts);
+        }
+
+        recommendedProducts = recommendedProducts.slice(0, 6);
+
+        res.send(recommendedProducts);
+
+    } catch (err) {
+        res.status(500).json({ error: 'Failed to fetch recommendations' });
+    }
+});
+
+
 module.exports=router;

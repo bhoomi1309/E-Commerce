@@ -1,19 +1,23 @@
 import { Link, Outlet, useLocation } from "react-router-dom";
 import { useState, useEffect } from "react";
 import useUserDetails from "../../pages/useUserDetails";
-import { getCartByEmail } from "../../pages/shopping-view/API"; 
+import { getCartByEmail } from "../../pages/shopping-view/API";
+import Chatbot from "../../components/shopping-view/Chatbot";
+import { useNavigate } from 'react-router-dom';
 
 function ShoppingLayout() {
     const location = useLocation();
     const { userData, isUserDataReady } = useUserDetails();
     const [userInitial, setUserInitial] = useState("");
     const [cartItemCount, setCartItemCount] = useState(0);
+    const [isChatbotOpen, setIsChatbotOpen] = useState(false);
+
+    const navigate = useNavigate();
 
     useEffect(() => {
         if (!isUserDataReady) {
             setUserInitial("?");
-        }
-        else {
+        } else {
             setUserInitial(userData.Username.charAt(0).toUpperCase());
         }
     }, [userData, isUserDataReady]);
@@ -34,7 +38,11 @@ function ShoppingLayout() {
         localStorage.removeItem("user");
         window.location.href = "/";
     };
-    
+
+    const handleNavigation = (path) => {
+        setIsChatbotOpen(false);
+        navigate(path);
+    };
 
     return (
         <>
@@ -68,9 +76,9 @@ function ShoppingLayout() {
                         <ul className="navbar-nav mx-auto mb-2 mb-lg-0 fs-5">
                             <li className="nav-item">
                                 <Link
-                                    className={`nav-link me-2 ${location.pathname === "/shopping" ? "fw-bold" : ""
-                                        }`}
+                                    className={`nav-link me-2 ${location.pathname === "/shopping" ? "fw-bold" : ""}`}
                                     to="/shopping"
+                                    onClick={() => handleNavigation("/shopping")}
                                 >
                                     Home
                                 </Link>
@@ -89,8 +97,7 @@ function ShoppingLayout() {
                             </li>
                             <li className="nav-item">
                                 <Link
-                                    className={`nav-link me-2 ${selectedCategory === "Male" ? "fw-bold" : ""
-                                        }`}
+                                    className={`nav-link me-2 ${selectedCategory === "Male" ? "fw-bold" : ""}`}
                                     to="/shopping/listing"
                                     state={{ category: "Male" }}
                                 >
@@ -99,8 +106,7 @@ function ShoppingLayout() {
                             </li>
                             <li className="nav-item">
                                 <Link
-                                    className={`nav-link me-2 ${selectedCategory === "Female" ? "fw-bold" : ""
-                                        }`}
+                                    className={`nav-link me-2 ${selectedCategory === "Female" ? "fw-bold" : ""}`}
                                     to="/shopping/listing"
                                     state={{ category: "Female" }}
                                 >
@@ -176,6 +182,72 @@ function ShoppingLayout() {
             </nav>
             <div style={{ marginTop: "63px" }}>
                 <Outlet />
+            </div>
+
+            {/* Chatbot */}
+            <div>
+                <button
+                    className="chatbot-toggle-btn"
+                    onClick={() => setIsChatbotOpen(!isChatbotOpen)}
+                    style={{
+                        position: "fixed",
+                        bottom: "20px",
+                        right: "20px",
+                        width: "60px",
+                        height: "60px",
+                        borderRadius: "50%",
+                        backgroundColor: "#00796b",
+                        color: "#fff",
+                        border: "none",
+                        display: "flex",
+                        justifyContent: "center",
+                        alignItems: "center",
+                        fontSize: "1.5rem",
+                        cursor: "pointer",
+                        zIndex: "2000",
+                        boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)",
+                    }}
+                >
+                    💬
+                </button>
+
+                {/* Overlay */}
+                {isChatbotOpen && (
+                    <div
+                        style={{
+                            position: "fixed",
+                            top: 0,
+                            left: 0,
+                            width: "100%",
+                            height: "100%",
+                            backgroundColor: "rgba(0, 0, 0, 0.5)",
+                            zIndex: 999,
+                        }}
+                        onClick={() => setIsChatbotOpen(false)}
+                    ></div>
+                )}
+
+                {/* Chatbot Container */}
+                {isChatbotOpen && (
+                    <div
+                        style={{
+                            position: "fixed",
+                            bottom: "90px",
+                            right: "20px",
+                            width: "430px",
+                            height: "600px",
+                            border: "1px solid #ccc",
+                            borderRadius: "10px",
+                            backgroundColor: "#fff",
+                            boxShadow: "0 4px 6px rgba(0, 0, 0, 0.2)",
+                            zIndex: 1000,
+                            overflow: "hidden",
+
+                        }}
+                    >
+                        <Chatbot setIsChatbotOpen={setIsChatbotOpen} />
+                    </div>
+                )}
             </div>
         </>
     );

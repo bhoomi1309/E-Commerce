@@ -85,3 +85,19 @@ export const fetchOrders = async () => {
         throw error;
     }
 };
+
+export const getUserByEmail = async (email) => {
+    try {
+        const res = await fetch(api + '/auth/users/' + email, { method: "GET" });
+        
+        if (!res.ok) {
+            throw new Error('Error: User Not Found');
+        }
+
+        const data = await res.json();
+        return data;
+    } catch (error) {
+        console.error("Error fetching user data:", error);
+        return null;
+    }
+};

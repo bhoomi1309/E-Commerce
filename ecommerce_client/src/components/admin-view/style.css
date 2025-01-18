@@ -26,55 +26,94 @@
         display: block;
     }
 }
-.order-details-popup {
-    position: absolute;
-    padding: 30px;
-    border: 1px solid black;
-    background-color: #6bf68b;
-    transform: translate(-30%, -50%);
-    border-radius: 5px;
-    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
-    z-index: 20;
-    width: 100%;
-    max-width: 30vw;
-}
-.tableItems{
-    width: 27vw;
-}
-.btnClose {
-    position: absolute;
-    top: 15px;
-    right: 15px;
-    cursor: pointer;
-    background-color: red;
-    color: white;
-}
-@media (max-width: 980px) {
-    .order-details-popup {
-        max-width: 50vw;
-    }
-    .tableItems{
-        width: 20vw;
-    }
-    .btnClose {
-        top: 10px;
-        right: 10px;
-    }
-}
 
-@media (max-width: 576px) {
-    .order-details-popup {
-        max-width: 100vw;
-        transform: translate(0%, -50%);
+.reactjs-popup-overlay {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+.popup-content {
+    position: relative;
+    width: 100%;
+    padding: 20px;
+    background: #ffffff;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    font-family: Arial, sans-serif;
+    color: #333;
+  }
+  
+  .popup-content button {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: #ff5f5f;
+    color: white;
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 14px;
+    padding: 5px 10px;
+    transition: background-color 0.3s ease;
+  }
+  
+  .popup-content button:hover {
+    background: #ff3333;
+  }
+  
+  .popup-content h3 {
+    font-size: 1.5rem;
+    color: #222;
+    margin-bottom: 15px;
+  }
+  
+  .popup-content h4 {
+    font-size: 1.2rem;
+    color: #555;
+    margin-bottom: 10px;
+  }
+  
+  /* Table Styling */
+  .popup-content table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 15px 0;
+  }
+  
+  .popup-content table thead {
+    background: #007bff;
+    color: white;
+  }
+  
+  .popup-content table th,
+  .popup-content table td {
+    padding: 10px;
+    text-align: left;
+    border: 1px solid #ddd;
+  }
+  
+  .popup-content table tr:nth-child(even) {
+    background: #f9f9f9;
+  }
+  
+  .popup-content p {
+    margin: 5px 0;
+  }
+  
+  .popup-content div {
+    margin: 10px 0;
+  }
+  
+  @media (max-width: 768px) {
+    .popup-content {
+      width: 100%;
+      padding: 15px;
     }
-    .tableItems{
-        width: 9vw;
+  
+    .popup-content table {
+      font-size: 0.9rem;
     }
-    .btnClose {
-        top: 5px;
-        right: 5px;
-    }
-}
+  }  
 
 .modal-overlay-add-product {
     position: fixed;

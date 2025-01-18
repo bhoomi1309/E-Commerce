@@ -180,3 +180,18 @@ export const getProductStock = async (productNo) => {
         throw error;
     }
 };
+
+export const getRecommendations = async (email) => {
+    try {
+        const response = await fetch(api + '/recommendations/' + email);
+        if (!response.ok) {
+            throw new Error("Failed to fetch recommendations");
+        }
+
+        const data = await response.json();
+        return data;
+    } catch (error) {
+        console.error("Error fetching recommendations:", error);
+        throw new Error("Failed to fetch recommendations");
+    }
+};

@@ -6,6 +6,7 @@ const authRouter=require('./Routes/auth-routes');
 const productRouter=require('./Routes/product-routes');
 const orderRouter=require('./Routes/order-routes');
 const cartRouter=require('./Routes/cart-routes');
+const chatRoutes = require('./Routes/chatbot-routes');
 
 require('dotenv').config();
 
@@ -20,6 +21,7 @@ mongoose.connect(connectionString).then(() => {
   app.use('/',productRouter);
   app.use('/',orderRouter);
   app.use('/',cartRouter);
+  app.use('/chat', chatRoutes);
 
   app.listen(3001, () => {
     console.log("Server started @ "+3001);
