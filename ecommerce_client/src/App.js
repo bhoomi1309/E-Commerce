@@ -19,6 +19,7 @@ import ShoppingListing from "./pages/shopping-view/listing/Listing";
 import ShoppingSearch from "./pages/shopping-view/search/Search";
 import ShoppingCheckout from "./pages/shopping-view/checkout/Checkout";
 import Home from "./pages/Home";
+import ForgotPassword from "./pages/authorization/ForgotPassword";
 
 function App() {
     
@@ -39,6 +40,7 @@ function App() {
                     >
                         <Route path="/auth/login" element={<Login />} />
                         <Route path="/auth/register" element={<Register />} />
+                        <Route path="/auth/forgot-password" element={<ForgotPassword />} />
                     </Route>
                     <Route
                         path="/admin"

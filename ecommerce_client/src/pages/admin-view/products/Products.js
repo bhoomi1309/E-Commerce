@@ -18,6 +18,22 @@ function AdminProducts() {
         setSelectedProduct(product);
     };
 
+
+    const updateStock = (productNo, updatedStock) => {
+        setProducts(prevProducts => 
+            prevProducts.map(product => 
+                product.No === productNo 
+                    ? { ...product, Stock: updatedStock } 
+                    : product
+            )
+        );
+        setSelectedProduct(prevProduct => 
+            prevProduct.No === productNo 
+                ? { ...prevProduct, Stock: updatedStock } 
+                : prevProduct
+        );
+    };
+
     const closeModal = () => {
         setSelectedProduct(null);
     };
@@ -83,10 +99,11 @@ function AdminProducts() {
             </div>
 
             {selectedProduct && (
-                <ProductDescription 
-                    selectedProduct={selectedProduct} 
-                    closeModal={closeModal} 
-                    deleteModal={deleteModal} 
+                <ProductDescription
+                    selectedProduct={selectedProduct}
+                    closeModal={closeModal}
+                    deleteModal={deleteModal}
+                    updateStock={updateStock}
                 />
             )}
 

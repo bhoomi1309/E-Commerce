@@ -101,3 +101,27 @@ export const getUserByEmail = async (email) => {
         return null;
     }
 };
+
+export const updateStock = async (productNo, newStock) => {
+    try {
+        const response = await fetch(api+'/products/'+productNo+'/update-stock', {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ Stock: newStock }),
+        });
+
+        if (!response.ok) {
+            const errorData = await response.json();
+            throw new Error(errorData.message || "Failed to update stock");
+        }
+
+        const data = await response.json();
+        alert(data.message);
+        return data.product;
+    } catch (error) {
+        console.error("Error updating stock:", error.message);
+        alert("An error occurred: " + error.message);
+    }
+};

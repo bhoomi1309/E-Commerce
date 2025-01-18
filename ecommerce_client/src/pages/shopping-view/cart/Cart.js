@@ -15,7 +15,7 @@ function ShoppingCart() {
 
     const handleCardClick = (product) => {
         setSelectedProduct(product);
-        setShowModal(true);
+        setShowModal(true); 
     };
 
     const closeModal = () => {

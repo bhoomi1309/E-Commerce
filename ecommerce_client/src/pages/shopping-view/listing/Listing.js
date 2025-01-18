@@ -10,6 +10,7 @@ function ShoppingListing() {
     const [filteredProducts, setFilteredProducts] = useState([]);
     const [selectedCategories, setSelectedCategories] = useState([]);
     const [selectedProductTypes, setSelectedProductTypes] = useState([]);
+    const [selectedBrands, setSelectedBrands] = useState([]);
     const [showModal, setShowModal] = useState(false);
     const [selectedProduct, setSelectedProduct] = useState(null);
     const [productIds, setProductIds] = useState([]);
@@ -38,44 +39,38 @@ function ShoppingListing() {
         fetchCartProducts();
     }, [isUserDataReady, userData?.Email]);
 
-    const categoryMap = {
-        Men: "Male",
-        Women: "Female",
-    };
-
     const productTypeMap = {
         Shirt: "Shirt",
         TShirt: "T-Shirt",
         Jeans: "Jeans",
         Top: "Top",
         Dress: "Dress",
-        Suit: "Suit",
+        Blazer: "Blazer",
+        Trousers: "Trousers",
+        CargoPants: "Cargo Pants" 
+    };
+
+    const brandMap = {
+        Levis: "Levis",
+        Adidas: "Adidas",
+        IndianTerrain: "Indian Terrain"
     };
 
     const location = useLocation();
 
     useEffect(() => {
-        const category = location.state?.category;
-    
+        const category = location.state?.category;    
         if (category) {
             setSelectedCategories([category]);
             setFilteredProducts(
                 products.filter((product) => product.Category === category)
             );
+        } else {
+            setFilteredProducts(products);
         }
     }, [location.state, products]);
     
-
-    const handleCategoryChange = (category) => {
-        const mappedCategory = categoryMap[category];
-        const updatedCategories = selectedCategories.includes(mappedCategory)
-            ? selectedCategories.filter((c) => c !== mappedCategory)
-            : [...selectedCategories, mappedCategory];
-
-        setSelectedCategories(updatedCategories);
-
-        filterProducts(updatedCategories, selectedProductTypes);
-    };
+    
 
     const handleProductTypeChange = (productType) => {
         const updatedProductTypes = selectedProductTypes.includes(productType)
@@ -87,15 +82,25 @@ function ShoppingListing() {
         filterProducts(selectedCategories, updatedProductTypes);
     };
 
-    const filterProducts = (categories, productTypes) => {
+    const handleBrandChange = (brand) => {
+        const updatedBrands = selectedBrands.includes(brand)
+            ? selectedBrands.filter((b) => b !== brand)
+            : [...selectedBrands, brand];
+
+        setSelectedBrands(updatedBrands);
+
+        filterProducts(selectedCategories, updatedBrands);
+    };
+
+    const filterProducts = (brand, productTypes) => {
         setFilteredProducts(
             products.filter((product) => {
-                const matchesCategory =
-                    categories.length === 0 || categories.includes(product.Category);
+                const matchesBrand = 
+                    brand.length === 0 || brand.includes(product.Brand);
                 const matchesProductType =
                     productTypes.length === 0 || productTypes.includes(product.Title);
 
-                return matchesCategory && matchesProductType;
+                return matchesProductType && matchesBrand;
             })
         );
     };
@@ -163,20 +168,20 @@ function ShoppingListing() {
                         <h3 className="fw-bold fs-2 pt-3">Filters</h3>
                         <hr />
                         <div>
-                            <h5 className="fw-bold fs-5">Categories</h5>
+                            <h5 className="fw-bold fs-5 mt-5">Brands</h5>
                             <ul className="list-unstyled mt-3 ms-3">
-                                {Object.keys(categoryMap).map((category) => (
-                                    <li className="mb-2" key={category}>
+                                {Object.keys(brandMap).map((brand) => (
+                                    <li className="mb-2" key={brand}>
                                         <input
                                             type="checkbox"
-                                            id={category}
+                                            id={brand}
                                             className="form-check-input me-2"
-                                            checked={selectedCategories.includes(categoryMap[category])}
-                                            onChange={() => handleCategoryChange(category)}
+                                            checked={selectedBrands.includes(brandMap[brand])}
+                                            onChange={() => handleBrandChange(brandMap[brand])}
                                             style={{ cursor: "pointer" }}
                                         />
-                                        <label htmlFor={category} className="form-check-label">
-                                            {category}
+                                        <label htmlFor={brand} className="form-check-label">
+                                            {brand}
                                         </label>
                                     </li>
                                 ))}
@@ -228,6 +233,7 @@ function ShoppingListing() {
                                         />
                                         <div className="card-body d-flex flex-column">
                                             <h5 className="card-title">{product.Title}</h5>
+                                            <p className="mb-4 text-secondary" style={{fontSize: "17px"}}>{product.Brand}</p>
                                             <p className="fw-bold mb-4">₹{product.SalePrice}</p>
                                             {product.Stock > 0 ? (
                                                 isProductInCart(product.No) ? (

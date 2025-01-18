@@ -9,7 +9,9 @@ function AddProduct({ setIsAddModalOpen, onProductAdded }) {
         Image: "",
         Price: "",
         SalePrice: "",
-        Stock: ""
+        Stock: "",
+        Details: "",
+        Brand: ""
     });
 
     const handleChange = (e) => {
@@ -40,64 +42,86 @@ function AddProduct({ setIsAddModalOpen, onProductAdded }) {
             <div className="modal-box-add">
                 <h2>Add New Product</h2>
                 <form onSubmit={handleSubmit}>
-                    <div className="form-group fg">
-                        <label>Product Title:</label>
-                        <input 
-                            type="text" 
-                            name="Title" 
-                            value={newProduct.Title} 
-                            onChange={handleChange} 
-                            required 
-                        />
-                    </div>
-                    <div className="form-group fg">
-                        <label>Category:</label>
-                        <input 
-                            type="text" 
-                            name="Category" 
-                            value={newProduct.Category} 
-                            onChange={handleChange} 
-                            required 
-                        />
-                    </div>
-                    <div className="form-group fg">
-                        <label>Image URL:</label>
-                        <input 
-                            type="text" 
-                            name="Image" 
-                            value={newProduct.Image} 
-                            onChange={handleChange} 
-                            required 
-                        />
-                    </div>
-                    <div className="form-group fg">
-                        <label>Price:</label>
-                        <input 
-                            type="number" 
-                            name="Price" 
-                            value={newProduct.Price} 
-                            onChange={handleChange} 
-                            required 
-                        />
-                    </div>
-                    <div className="form-group fg">
-                        <label>Sale Price:</label>
-                        <input 
-                            type="number" 
-                            name="SalePrice" 
-                            value={newProduct.SalePrice} 
-                            onChange={handleChange} 
-                        />
-                    </div>
-                    <div className="form-group fg">
-                        <label>Stock:</label>
-                        <input 
-                            type="number" 
-                            name="Stock" 
-                            value={newProduct.Stock} 
-                            onChange={handleChange} 
-                            required 
-                        />
+                    <div className="form-grid">
+                        <div className="form-group fg">
+                            <label>Product Title:</label>
+                            <input
+                                type="text"
+                                name="Title"
+                                value={newProduct.Title}
+                                onChange={handleChange}
+                                required
+                            />
+                        </div>
+                        <div className="form-group fg">
+                            <label>Details:</label>
+                            <input
+                                type="text"
+                                name="Details"
+                                value={newProduct.Details}
+                                onChange={handleChange}
+                                required
+                            />
+                        </div>
+                        <div className="form-group fg">
+                            <label>Brand:</label>
+                            <input
+                                type="text"
+                                name="Brand"
+                                value={newProduct.Brand}
+                                onChange={handleChange}
+                                required
+                            />
+                        </div>
+                        <div className="form-group fg">
+                            <label>Category:</label>
+                            <input
+                                type="text"
+                                name="Category"
+                                value={newProduct.Category}
+                                onChange={handleChange}
+                                required
+                            />
+                        </div>
+                        <div className="form-group fg">
+                            <label>Image URL:</label>
+                            <input
+                                type="text"
+                                name="Image"
+                                value={newProduct.Image}
+                                onChange={handleChange}
+                                required
+                            />
+                        </div>
+                        <div className="form-group fg">
+                            <label>Price:</label>
+                            <input
+                                type="number"
+                                name="Price"
+                                value={newProduct.Price}
+                                onChange={handleChange}
+                                required
+                            />
+                        </div>
+                        <div className="form-group fg">
+                            <label>Sale Price:</label>
+                            <input
+                                type="number"
+                                name="SalePrice"
+                                value={newProduct.SalePrice}
+                                onChange={handleChange}
+                            />
+                        </div>
+                        <div className="form-group fg">
+                            <label>Stock:</label>
+                            <input
+                                type="number"
+                                name="Stock"
+                                value={newProduct.Stock}
+                                onChange={handleChange}
+                                required
+                            />
+                        </div>
                     </div>
                     <div className="form-actions fa">
                         <button type="submit" className='btnAdd'>Add Product</button>

@@ -16,6 +16,8 @@ function AdminLayout() {
           }).then((result) => {
             if (result.isConfirmed) {
                 localStorage.removeItem('authToken');
+                sessionStorage.removeItem('authToken');
+                window.location.reload();
                 navigate('/', { replace: true });
             }
           });

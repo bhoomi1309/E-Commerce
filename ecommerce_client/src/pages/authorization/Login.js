@@ -11,6 +11,11 @@ function Login(){
     });
     const  {setUserGlobal}  = useUser();
     const navigate = useNavigate();
+
+    const forgotPassword = async (e) => {
+        navigate('/auth/forgot-password');
+    }
+
     const handleFormSubmit = async (e) => {
         e.preventDefault();
         if (user.Email === '' || user.Password === '') {
@@ -103,6 +108,15 @@ function Login(){
                             style={{backgroundColor: "#150647" , color: "white"}}
                             onClick={handleFormSubmit}
                         >Sign In</button>
+                    </div>
+                </div>
+                <div className='row px-5 py-5'>
+                    <div className='col'>
+                        <button 
+                            className='btn btn-lg w-100' 
+                            style={{backgroundColor: "#150647" , color: "white"}}
+                            onClick={forgotPassword}
+                        >Forgot Password</button>
                     </div>
                 </div>
             </div>

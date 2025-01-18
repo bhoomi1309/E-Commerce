@@ -62,7 +62,7 @@ export const getCartByEmail = async (email) => {
         }
         const data = await res.json();
         return data;
-    } catch (error) {
+    } catch (error) { 
         console.error("Error in getCartByEmail:", error);
         throw error;
     }

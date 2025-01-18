@@ -29,12 +29,52 @@ router.get("/products/:id", async (req, res) => {
 
 router.post('/products', async (req, res) => {
   try {
-    const newItem = new products({ ...req.body,No: await products.countDocuments() + 1 });
+    const { Title, ...otherFields } = req.body;
+
+    const existingProduct = await products.findOne({ Title });
+
+    let similarityValue;
+    if (existingProduct) {
+      similarityValue = existingProduct.Similarity;
+    } 
+    else {
+      const distinctTitlesCount = await products.distinct("Title").then(titles => titles.length);
+      similarityValue = distinctTitlesCount + 1;
+    }
+
+    const newItem = new products({
+      ...otherFields,
+      Title,
+      No: await products.countDocuments() + 1,
+      Similarity: similarityValue
+    });
+
     await newItem.save();
+
     res.status(201).json({ message: 'Stock added successfully', product: newItem });
   } catch (error) {
     console.error('Error adding product:', error);
     res.status(500).json({ message: 'Failed to add product', error: error.message });
+  }
+});
+
+router.put('/products/:no/update-stock', async (req, res) => {
+  const productNo = parseInt(req.params.no);
+  const { Stock } = req.body;
+  try {
+      const product = await products.findOne({ No: productNo });
+      if (!product) {
+          return res.status(404).json({ message: "Product not found" });
+      }
+      if (Stock < 0) {
+          return res.status(400).json({ message: "Stock cannot be negative" });
+      }
+      product.Stock = Stock;
+      await product.save();
+      res.json({ message: "Stock updated successfully", product });
+  } catch (error) {
+      console.error('Error updating stock:', error);
+      res.status(500).json({ message: "Internal server error", error: error.message });
   }
 });
 

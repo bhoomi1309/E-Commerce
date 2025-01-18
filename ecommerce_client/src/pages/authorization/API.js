@@ -76,6 +76,7 @@ export const checkUser = async (user) => {
         }
 
         const data = await res.json();
+        
         localStorage.setItem('user', data.user);
         return data;
     } catch (error) {

@@ -94,10 +94,19 @@ function ProductDescription({ product, closeModal, updateCart }) {
                         </div>
                         <div className="w-50 ps-3">
                             <div className="h3 pb-3">{product.Title}</div>
+                            <p style={{fontSize: "17px"}}>
+                                    {product.Details}
+                            </p>
                             <p className="text-secondary">
                                 Category:
                                 <span className="text-black fw-bold ms-2" style={{ fontSize: "18px" }}>
                                     {product.Category}
+                                </span>
+                            </p>
+                            <p className="text-secondary">
+                                Brand:
+                                <span className="text-black fw-bold ms-2" style={{ fontSize: "18px" }}>
+                                    {product.Brand}
                                 </span>
                             </p>
                             <p className="text-secondary">
