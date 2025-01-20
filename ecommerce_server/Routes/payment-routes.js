@@ -1,5 +1,7 @@
 const express = require("express");
-const stripe = require("stripe")("sk_test_51QiIllP7psTNMuKWlw3RGJlaBKK5ndo0bIKBj4YAHTbOvAoMDfbDzv6XQjlKBHotc8iFEMxLBZEi2ejnYIIcknKt00mSkN7IN8");
+require('dotenv').config();
+
+const stripe = require("stripe")(process.env.PAYMENT_KEY);
 const router = express.Router();
 
 const coupons = [
