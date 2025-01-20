@@ -8,6 +8,6 @@ const schema=mongoose.Schema({
     Role:{
         type:String,
         default:'user'
-    }
+    },
 });
 module.exports=mongoose.model('users',schema);

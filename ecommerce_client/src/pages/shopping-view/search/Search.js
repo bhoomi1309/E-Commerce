@@ -18,11 +18,14 @@ function Search() {
     }, []);
 
     useEffect(() => {
-        const results = products.filter((product) =>
-            product.Title.toLowerCase().includes(searchQuery.toLowerCase())
-        );
+        const results = products.filter((product) => {
+            const combinedString = (product.Title+' '+product.Details+' '+product.Brand).toLowerCase();
+            const searchWords = searchQuery.toLowerCase().split(" ").filter(word => word.trim() !== "");
+
+            return searchWords.every(word => combinedString.includes(word));
+        });
         setFilteredProducts(results);
-    }, [searchQuery, products]);
+    }, [searchQuery, products]);    
 
     const handleCardClick = (product) => {
         setSelectedProduct(product);
@@ -61,6 +64,7 @@ function Search() {
                             />
                             <div className="product-info">
                                 <h5>{product.Title}</h5>
+                                <p className="product-brand text-secondary">{product.Brand}</p>
                                 <p className="product-price">₹{product.SalePrice}</p>
                             </div>
                         </div>

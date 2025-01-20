@@ -26,24 +26,24 @@ function OrderDescription({ order, closePopup, isAdmin }) {
   }, [isAdmin, order.Email]);
 
   return (
-    <Popup 
-        open={true} 
-        onClose={closePopup}
-        contentStyle={{
-            display: "flex",
-            justifyContent: "center",
-            textAlign: "center",
-            alignItems: "center",
-            padding: "20px",
-            background: "white",
-            maxWidth: "850px",
-            maxHeight: "100vh",
-            overflowY: "auto",
-            backgroundColor: "#37ab96",
-            border: "3px solid black"
-          }}
+    <Popup
+      open={true}
+      onClose={closePopup}
+      contentStyle={{
+        display: "flex",
+        justifyContent: "center",
+        textAlign: "center",
+        alignItems: "center",
+        padding: "20px",
+        background: "white",
+        maxWidth: "850px",
+        maxHeight: "100vh",
+        overflowY: "auto",
+        backgroundColor: "#37ab96",
+        border: "3px solid black"
+      }}
     >
-      <div className="popup-content">
+      <div className="popup-content popup-order">
         <button onClick={closePopup}>&times;</button>
         <h3>Order ID: {order.No}</h3>
 
@@ -78,15 +78,16 @@ function OrderDescription({ order, closePopup, isAdmin }) {
           <tbody>
             {order.enrichedItems.map((item, index) => (
               <tr key={index}>
-                <td>{item.productDetails.No}</td>
+                <td>{index+1}</td>
                 <td>{item.productDetails.Title}</td>
                 <td>{item.productDetails.Category}</td>
                 <td>{item.productDetails.SalePrice}</td>
-                <td>{item.productDetails.Quantity ?? 1}</td>
+                <td>{item.Quantity}</td>
               </tr>
             ))}
           </tbody>
         </table>
+
 
         <div>
           <strong>Payment Method:</strong> {order.PaymentMethod}

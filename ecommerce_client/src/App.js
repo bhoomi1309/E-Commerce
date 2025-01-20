@@ -20,6 +20,7 @@ import ShoppingSearch from "./pages/shopping-view/search/Search";
 import ShoppingCheckout from "./pages/shopping-view/checkout/Checkout";
 import Home from "./pages/Home";
 import ForgotPassword from "./pages/authorization/ForgotPassword";
+import CheckoutWrapper from "./pages/shopping-view/checkout/Checkout";
 
 function App() {
     
@@ -67,7 +68,7 @@ function App() {
                         <Route path="cart" element={<ShoppingCart />} />
                         <Route path="listing" element={<ShoppingListing />} />
                         <Route path="search" element={<ShoppingSearch />} />
-                        <Route path="checkout" element={<ShoppingCheckout />} />
+                        <Route path="checkout" element={<CheckoutWrapper />} />
                     </Route>
                     <Route path="*" element={<NotFound />} />
                 </Routes>

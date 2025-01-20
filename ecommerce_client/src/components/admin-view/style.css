@@ -33,7 +33,7 @@
     align-items: center;
   }
 
-.popup-content {
+.popup-order {
     position: relative;
     width: 100%;
     padding: 20px;
@@ -43,7 +43,7 @@
     color: #333;
   }
   
-  .popup-content button {
+  .popup-order button {
     position: absolute;
     top: 10px;
     right: 10px;
@@ -57,60 +57,60 @@
     transition: background-color 0.3s ease;
   }
   
-  .popup-content button:hover {
+  .popup-order button:hover {
     background: #ff3333;
   }
   
-  .popup-content h3 {
+  .popup-order h3 {
     font-size: 1.5rem;
     color: #222;
     margin-bottom: 15px;
   }
   
-  .popup-content h4 {
+  .popup-order h4 {
     font-size: 1.2rem;
     color: #555;
     margin-bottom: 10px;
   }
   
   /* Table Styling */
-  .popup-content table {
+  .popup-order table {
     width: 100%;
     border-collapse: collapse;
     margin: 15px 0;
   }
   
-  .popup-content table thead {
+  .popup-order table thead {
     background: #007bff;
     color: white;
   }
   
-  .popup-content table th,
-  .popup-content table td {
+  .popup-order table th,
+  .popup-order table td {
     padding: 10px;
     text-align: left;
     border: 1px solid #ddd;
   }
   
-  .popup-content table tr:nth-child(even) {
+  .popup-order table tr:nth-child(even) {
     background: #f9f9f9;
   }
   
-  .popup-content p {
+  .popup-order p {
     margin: 5px 0;
   }
   
-  .popup-content div {
+  .popup-order div {
     margin: 10px 0;
   }
   
   @media (max-width: 768px) {
-    .popup-content {
+    .popup-order {
       width: 100%;
       padding: 15px;
     }
   
-    .popup-content table {
+    .popup-order table {
       font-size: 0.9rem;
     }
   }  

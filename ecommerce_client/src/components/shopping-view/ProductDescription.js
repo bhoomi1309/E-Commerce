@@ -7,7 +7,7 @@ function ProductDescription({ product, closeModal, updateCart }) {
     const { userData, isUserDataReady } = useUserDetails();
     const [cart, setCart] = useState([]);
     const [isInCart, setIsInCart] = useState(false);
-    const [isOutOfStock, setIsOutOfStock] = useState(false);  // State for out-of-stock status
+    const [isOutOfStock, setIsOutOfStock] = useState(false);
 
     useEffect(() => {
         const fetchCartProducts = async () => {
@@ -83,19 +83,21 @@ function ProductDescription({ product, closeModal, updateCart }) {
         >
             <div className="modal-dialog modal-lg">
                 <div className="modal-content p-3">
-                    <div className="modal-body d-flex">
-                        <div className="w-50 pe-3">
+                    <div className="modal-body d-flex flex-column flex-sm-row">
+                        {/* Image Section */}
+                        <div className="w-100 d-flex justify-content-center align-items-center mb-3 mb-sm-0">
                             <img
                                 src={product.Image}
                                 alt={product.Title}
                                 className="img-fluid"
-                                style={{ height: "100%", objectFit: "cover" }}
+                                style={{ maxHeight: "300px", objectFit: "contain" }}
                             />
                         </div>
-                        <div className="w-50 ps-3">
+                        {/* Details Section */}
+                        <div className="w-100 w-sm-50 ps-3">
                             <div className="h3 pb-3">{product.Title}</div>
-                            <p style={{fontSize: "17px"}}>
-                                    {product.Details}
+                            <p style={{ fontSize: "17px" }}>
+                                {product.Details}
                             </p>
                             <p className="text-secondary">
                                 Category:

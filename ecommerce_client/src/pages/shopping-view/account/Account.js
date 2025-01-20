@@ -10,7 +10,7 @@ function ShoppingAccount() {
     const [isLoadingOrders, setIsLoadingOrders] = useState(true);
     const [selectedOrder, setSelectedOrder] = useState(null);
     const [orderItems, setOrderItems] = useState([]);
-    const isAdmin=false;
+    const isAdmin = false;
 
     useEffect(() => {
         fetchProducts().then((res) => {
@@ -21,13 +21,14 @@ function ShoppingAccount() {
     const handleOrderClick = (order) => {
         const enrichedItems = order.Items.map((item) => {
             const productDetails = orderItems.find(
-                (product) => product.No === item
+                (product) => product.No === item.No
             );
             return {
                 ...item,
                 productDetails,
             };
         });
+    
         setSelectedOrder({ ...order, enrichedItems });
     };
 
@@ -35,7 +36,7 @@ function ShoppingAccount() {
         if (isUserDataReady && userData?.Email) {
             getOrdersByEmail(userData.Email)
                 .then((data) => {
-                    setOrders(data);
+                    setOrders(data.reverse());
                     setIsLoadingOrders(false);
                 })
                 .catch((error) => {
@@ -158,7 +159,7 @@ function ShoppingAccount() {
                                         <strong>Date:</strong> {parseDateString(order.OrderDate).toLocaleDateString()}
                                     </p>
                                     <p>
-                                        <strong>Items:</strong> {order.Items.length}
+                                        <strong>Items:</strong> {order.Items.reduce((total, item) => total + item.Quantity, 0)}
                                     </p>
                                     <p>
                                         <strong>Total:</strong> ₹{order.TotalAmount}

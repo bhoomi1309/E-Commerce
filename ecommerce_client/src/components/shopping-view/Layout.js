@@ -1,15 +1,14 @@
 import { Link, Outlet, useLocation } from "react-router-dom";
 import { useState, useEffect } from "react";
 import useUserDetails from "../../pages/useUserDetails";
-import { getCartByEmail } from "../../pages/shopping-view/API";
 import Chatbot from "../../components/shopping-view/Chatbot";
 import { useNavigate } from 'react-router-dom';
 
 function ShoppingLayout() {
+
     const location = useLocation();
     const { userData, isUserDataReady } = useUserDetails();
     const [userInitial, setUserInitial] = useState("");
-    const [cartItemCount, setCartItemCount] = useState(0);
     const [isChatbotOpen, setIsChatbotOpen] = useState(false);
 
     const navigate = useNavigate();
@@ -20,16 +19,6 @@ function ShoppingLayout() {
         } else {
             setUserInitial(userData.Username.charAt(0).toUpperCase());
         }
-    }, [userData, isUserDataReady]);
-
-    useEffect(() => {
-        const getCartItemCount = async () => {
-            if (isUserDataReady && userData?.Email) {
-                const cart = await getCartByEmail(userData.Email);
-                setCartItemCount(cart.length);
-            }
-        };
-        getCartItemCount();
     }, [userData, isUserDataReady]);
 
     const selectedCategory = location.state?.category;
@@ -136,21 +125,13 @@ function ShoppingLayout() {
                                     }}
                                     className="text-dark"
                                 >
-                                    <i className="fa-solid fa-cart-shopping fs-3 me-3"></i>
-                                    {cartItemCount > 0 && (
-                                        <span
-                                            className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger"
-                                            style={{
-                                                fontSize: "0.75rem",
-                                                padding: "0.25rem 0.5rem",
-                                            }}
-                                        >
-                                            {cartItemCount}
-                                        </span>
-                                    )}
+                                        <i
+                                            className="fa-solid fa-cart-shopping fs-3 me-1"
+                                            style={{ position: "relative" }}
+                                        ></i>
                                 </Link>
                             </li>
-                            <li className="nav-item pt-1">
+                            <li className="nav-item pt-1 ms-2">
                                 <Link
                                     to="/shopping/account"
                                     style={{
@@ -193,8 +174,8 @@ function ShoppingLayout() {
                         position: "fixed",
                         bottom: "20px",
                         right: "20px",
-                        width: "60px",
-                        height: "60px",
+                        width: "70px",
+                        height: "70px",
                         borderRadius: "50%",
                         backgroundColor: "#00796b",
                         color: "#fff",
@@ -230,20 +211,7 @@ function ShoppingLayout() {
                 {/* Chatbot Container */}
                 {isChatbotOpen && (
                     <div
-                        style={{
-                            position: "fixed",
-                            bottom: "90px",
-                            right: "20px",
-                            width: "430px",
-                            height: "600px",
-                            border: "1px solid #ccc",
-                            borderRadius: "10px",
-                            backgroundColor: "#fff",
-                            boxShadow: "0 4px 6px rgba(0, 0, 0, 0.2)",
-                            zIndex: 1000,
-                            overflow: "hidden",
-
-                        }}
+                        className="chatbot-container"
                     >
                         <Chatbot setIsChatbotOpen={setIsChatbotOpen} />
                     </div>

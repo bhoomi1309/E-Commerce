@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import './style.css';
 import { addProducts } from '../../pages/admin-view/API';
+import Swal from 'sweetalert2';
 
 function AddProduct({ setIsAddModalOpen, onProductAdded }) {
     const [newProduct, setNewProduct] = useState({
@@ -24,6 +25,18 @@ function AddProduct({ setIsAddModalOpen, onProductAdded }) {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+
+        const requiredFields = ['Title', 'Category', 'Image', 'Price', 'Stock', 'Details', 'Brand'];
+        for (let field of requiredFields) {
+            if (!newProduct[field]) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: `${field} is required!`,
+                });
+                return;
+            }
+        }
         try {
             const response = await addProducts(newProduct);
             if (response.product) {
