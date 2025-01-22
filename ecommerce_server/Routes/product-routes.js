@@ -46,7 +46,8 @@ router.post('/products', async (req, res) => {
       ...otherFields,
       Title,
       No: await products.countDocuments() + 1,
-      Similarity: similarityValue
+      Similarity: similarityValue,
+      Reviews:[]
     });
 
     await newItem.save();
@@ -132,6 +133,44 @@ router.get('/products/stock/:productNo', async (req, res) => {
   } catch (error) {
       console.error('Error fetching product stock:', error);
       res.status(500).json({ message: 'Failed to fetch product stock' });
+  }
+});
+
+router.post("/add-review/:id", async (req, res) => {
+  const { id } = req.params;
+  const { username, review } = req.body;
+
+  if (!username || !review) {
+      return res.status(400).json({ message: "Username and review are required." });
+  }
+
+  try {
+      const product = await products.findOne({No: id});
+      if (!product) {
+          return res.status(404).json({ message: "Product not found." });
+      }
+
+      product.Reviews.push({ username, review });
+
+      await product.save();
+
+      res.status(200).json({ message: "Review added successfully.", product });
+  } catch (error) {
+      res.status(500).json({ message: "Error adding review.", error: error.message });
+  }
+});
+
+router.get("/:productNo/reviews", async (req, res) => {
+  const { productNo } = req.params;
+
+  try {
+      const product = await products.findOne({ No: productNo });
+      if (!product) {
+          return res.status(404).json({ message: "Product not found" });
+      }
+      res.status(200).json(product.Reviews);
+  } catch (error) {
+      res.status(500).json({ message: "Error fetching reviews", error });
   }
 });
 

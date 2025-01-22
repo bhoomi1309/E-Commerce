@@ -1,12 +1,28 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { getReviewsAPI } from '../../pages/shopping-view/API';
 
 function ProductDescription({ selectedProduct, closeModal, deleteModal, updateStock }) {
     const navigate = useNavigate();
     const [stockChange, setStockChange] = useState(0);
+    const [reviews, setReviews] = useState([]);
+
+    useEffect(() => {
+        const fetchReviews = async () => {
+            try {
+                const response = await getReviewsAPI(selectedProduct.No);
+                setReviews(response || []);
+            } catch (error) {
+                console.error("Failed to fetch product reviews:", error);
+            }
+        };
+
+        if (selectedProduct?.No) {
+            fetchReviews();
+        }
+    }, [selectedProduct?.No]);
 
     const handleStockUpdate = (isAdding) => {
-
         const updatedStock = isAdding
             ? selectedProduct.Stock + stockChange
             : selectedProduct.Stock - stockChange;
@@ -73,6 +89,26 @@ function ProductDescription({ selectedProduct, closeModal, deleteModal, updateSt
                                 </div>
                             </div>
                         </div>
+
+                        {/* Reviews Section */}
+                        <div style={{ marginTop: "1rem" }}>
+                            <p className="fw-bold">Reviews:</p>
+                            {reviews.length > 0 ? (
+                                <div style={{ maxHeight: "200px", overflowY: "auto", padding: "0.5rem", border: "1px solid #ddd", borderRadius: "5px" }}>
+                                    {reviews.map((review, index) => (
+                                        <div key={index} className="review-item" style={{ marginBottom: "1rem" }}>
+                                            <strong className="review-username">{review.username}</strong>
+                                            <p className="review-text" style={{ marginLeft: "1.5rem", color: "#555" }}>
+                                                {review.review}
+                                            </p>
+                                        </div>
+                                    ))}
+                                </div>
+                            ) : (
+                                <p>No reviews available for this product.</p>
+                            )}
+                        </div>
+
                         {/* Modify Stock Section */}
                         <div style={{ marginTop: "1rem" }}>
                             <p className="fw-bold">Modify Stock:</p>

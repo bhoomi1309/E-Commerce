@@ -92,6 +92,23 @@
   background: #0056b3;
 }
 
+.review-item {
+  margin-bottom: 1rem;
+}
+
+.review-username {
+  font-weight: bold;
+  display: block;
+  margin-bottom: 0.3rem;
+}
+
+.review-text {
+  margin-left: 1.5rem;
+  color: #555;
+  font-size: 0.95rem;
+}
+
+
 
 @media(max-width: 455px){
   .chatbot-container{

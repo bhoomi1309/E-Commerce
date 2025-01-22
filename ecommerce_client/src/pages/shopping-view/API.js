@@ -195,3 +195,22 @@ export const getRecommendations = async (email) => {
         throw new Error("Failed to fetch recommendations");
     }
 };
+
+export const addReviewAPI = async (productNo, username, review) => {
+    const response = await fetch(api+'/add-review/'+productNo, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ username, review }),
+    });
+    if (!response.ok) {
+        throw new Error("Failed to add review");
+    }
+};
+
+export const getReviewsAPI = async (productNo) => {
+    const response = await fetch(api+'/'+productNo+'/reviews');
+    if (!response.ok) {
+        throw new Error("Failed to fetch reviews");
+    }
+    return response.json();
+};

@@ -53,6 +53,7 @@ router.post('/register', async (req, res) => {
             Email: req.body.Email,
             Cart: []
         });
+        
         await newCart.save();
 
 

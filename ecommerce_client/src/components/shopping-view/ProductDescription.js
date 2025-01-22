@@ -1,13 +1,23 @@
 import React, { useEffect, useState } from "react";
 import './style.css';
 import useUserDetails from "../../pages/useUserDetails";
-import { getCartByEmail, addToCartAPI, removeFromCartAPI, getProductStock } from "../../pages/shopping-view/API";  // Assuming getProductStock is the function to fetch stock
+import {
+    getCartByEmail,
+    addToCartAPI,
+    removeFromCartAPI,
+    getProductStock,
+    addReviewAPI,
+    getReviewsAPI
+} from "../../pages/shopping-view/API";
+import Swal from "sweetalert2";
 
 function ProductDescription({ product, closeModal, updateCart }) {
     const { userData, isUserDataReady } = useUserDetails();
     const [cart, setCart] = useState([]);
     const [isInCart, setIsInCart] = useState(false);
     const [isOutOfStock, setIsOutOfStock] = useState(false);
+    const [review, setReview] = useState("");
+    const [reviews, setReviews] = useState([]);
 
     useEffect(() => {
         const fetchCartProducts = async () => {
@@ -45,6 +55,21 @@ function ProductDescription({ product, closeModal, updateCart }) {
         fetchStockStatus();
     }, [product?.No]);
 
+    useEffect(() => {
+        const fetchReviews = async () => {
+            if (product?.No) {
+                try {
+                    const fetchedReviews = await getReviewsAPI(product.No);
+                    setReviews(fetchedReviews);
+                } catch (error) {
+                    console.error("Failed to fetch reviews:", error);
+                }
+            }
+        };
+
+        fetchReviews();
+    }, [product?.No]);
+
     const handleAddOrRemove = async () => {
         if (isOutOfStock) {
             console.log("Product is out of stock");
@@ -71,6 +96,37 @@ function ProductDescription({ product, closeModal, updateCart }) {
             closeModal();
         } catch (error) {
             console.error("Failed to update cart:", error);
+        }
+    };
+
+    const handleReviewSubmit = async () => {
+        if (!review.trim()) {
+            Swal.fire({
+                icon: "error",
+                title: "Oops...",
+                text: "Review can't be empty!",
+            });
+            return;
+        }
+
+        try {
+            await addReviewAPI(product.No, userData.Username, review);
+            setReviews([...reviews, { username: userData.Username, review }]);
+            setReview("");
+            Swal.fire({
+                position: "top-end",
+                icon: "success",
+                title: "We value your feedback. Thanks for the review!",
+                showConfirmButton: false,
+                timer: 1500
+            });
+        } catch (error) {
+            console.error("Failed to submit review:", error);
+            Swal.fire({
+                icon: "error",
+                title: "Oops...",
+                text: "Failed to save review! Please try again later!",
+            });
         }
     };
 
@@ -117,6 +173,39 @@ function ProductDescription({ product, closeModal, updateCart }) {
                                     ₹{product.SalePrice}
                                 </span>
                             </p>
+
+                            {/* Review Section */}
+                            <div className="mt-4">
+                                <textarea
+                                    className="form-control"
+                                    rows="3"
+                                    placeholder="Write your review here..."
+                                    value={review}
+                                    onChange={(e) => setReview(e.target.value)}
+                                />
+                                <button
+                                    type="button"
+                                    className="btn btn-primary mt-2"
+                                    onClick={handleReviewSubmit}
+                                >
+                                    Submit Review
+                                </button>
+                            </div>
+
+                            <div className="mt-4">
+                                <h5>Reviews:</h5>
+                                {reviews.length > 0 ? (
+                                    reviews.map((r, index) => (
+                                        <div key={index} className="review-item">
+                                            <strong className="review-username">{r.username}</strong>
+                                            <p className="review-text">{r.review}</p>
+                                        </div>
+                                    ))
+                                ) : (
+                                    <p>No reviews yet. Be the first to review!</p>
+                                )}
+                            </div>
+
                             <div className="modal-footer mt-5">
                                 <button
                                     type="button"
