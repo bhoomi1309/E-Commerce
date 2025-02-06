@@ -18,7 +18,7 @@ This is a full-stack E-commerce application built using the MERN (MongoDB, Expre
 - 📦 **Product Management:** APIs for creating, reading, updating, and deleting products.
 - 👤 **User Management:** APIs for user authentication and authorization.
 - 🛒 **Order Management:** Manage user orders and status tracking.
-- 🔒 **Secure API:** Data validation and secure routes using JWT.
+- 🔒 **Secure API:** Data validation and secure routes.
 
 ---
 
@@ -26,7 +26,6 @@ This is a full-stack E-commerce application built using the MERN (MongoDB, Expre
 
 ### Frontend
 - **React.js**: Library for building the user interface.
-- **Redux**: State management for predictable and centralized application state.
 - **Bootstrap**: For styling and responsive design.
 
 ### Backend
@@ -47,7 +46,7 @@ This is a full-stack E-commerce application built using the MERN (MongoDB, Expre
 ### Steps
 1. Clone the repository:
     ```bash
-    git clone https://github.com/your-username/E-Commerce.git
+    git clone https://github.com/bhoomi1309/E-Commerce.git
     cd E-Commerce
 2. Install dependencies for the backend:
     ```bash
@@ -71,6 +70,3 @@ This is a full-stack E-commerce application built using the MERN (MongoDB, Expre
     ```bash
     cd ecommerce_client
     npm start
-
-    
-
