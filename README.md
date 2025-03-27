@@ -18,9 +18,7 @@ This is a full-stack E-commerce application built using the MERN (MongoDB, Expre
 - 📦 **Product Management:** APIs for creating, reading, updating, and deleting products.
 - 👤 **User Management:** APIs for user authentication and authorization.
 - 🛒 **Order Management:** Manage user orders and status tracking.
-<<<<<<< HEAD
 - 🔒 **Secure API:** Data validation and secure routes.
-=======
 - 🔒 **Secure API:** Data validation and secure routes using JWT.
 
 ---
@@ -37,6 +35,8 @@ This is a full-stack E-commerce application built using the MERN (MongoDB, Expre
 - **Express.js**: Lightweight framework for building RESTful APIs.
 - **MongoDB**: NoSQL database for storing application data.
 - **Mongoose**: ODM for MongoDB schema modeling and queries.
+
+---
 
 
 ## 🖥️ Installation and Setup
